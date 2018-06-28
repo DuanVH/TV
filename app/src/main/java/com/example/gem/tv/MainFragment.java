@@ -8,10 +8,11 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
-import android.util.Log;
+import android.support.v17.leanback.widget.Row;
+import android.support.v17.leanback.widget.RowPresenter;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -21,10 +22,16 @@ import android.widget.TextView;
 
 public class MainFragment extends BrowseFragment {
 
+  private static final int DRAWABLE = 0;
+  private static final int PICASSO = 1;
+
   private static final int GRID_ITEM_HEIGHT = 100;
   private static final int GRID_ITEM_WIDTH = 200;
 
   private static final String TAG = MainFragment.class.getSimpleName();
+
+  private static SimpleBackgroundManager simpleBackgroundManager = null;
+  private static PicassoBackgroundManager picassoBackgroundManager = null;
 
   private ArrayObjectAdapter mRowsAdapter;
 
@@ -32,9 +39,85 @@ public class MainFragment extends BrowseFragment {
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    Log.e(TAG, "onActivityCreated: ");
+
+    simpleBackgroundManager = new SimpleBackgroundManager(getActivity());
+    picassoBackgroundManager = new PicassoBackgroundManager(getActivity());
+
     setupUIElements();
     loadRows();
+    setupEventListener();
+  }
+
+  private void setupEventListener() {
+    setOnItemViewSelectedListener(new ItemViewSelectedListener());
+  }
+
+  private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
+
+    @Override
+    public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
+      // moi khi item duoc chon thi ...
+//      if (item instanceof String) {
+//        simpleBackgroundManager.clearBackground();
+//      } else if (item instanceof Movie) {
+//        simpleBackgroundManager.updateBackground(getActivity().getDrawable(R.drawable.background_first));
+//      }
+      int test = PICASSO;
+
+      // Su dung anh trong Drawable
+      if (test == DRAWABLE) {
+        switch ((int) row.getId()) {
+          case 0:
+            simpleBackgroundManager.clearBackground();
+            break;
+
+          case 1:
+            simpleBackgroundManager.updateBackground(getActivity().getDrawable(R.drawable.background_second));
+            break;
+
+          case 2:
+            simpleBackgroundManager.updateBackground(getActivity().getDrawable(R.drawable.background_third));
+            break;
+
+          case 3:
+            simpleBackgroundManager.updateBackground(getActivity().getDrawable(R.drawable.background_fourth));
+            break;
+
+          default:
+            break;
+        }
+      } else if (test == PICASSO) {
+        switch ((int) row.getId()) {
+          case 0:
+            picassoBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/10/RIMG0656.jpg");
+            break;
+
+          case 1:
+            picassoBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/08/DSC02580.jpg");
+            break;
+
+          case 2:
+            picassoBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/08/DSC02630.jpg");
+            break;
+
+          case 3:
+            picassoBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/08/DSC02529.jpg");
+            break;
+
+          default:
+            break;
+        }
+      } else {
+        if (item instanceof String) {
+          // GridItemPresenter
+          picassoBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/10/RIMG0656.jpg");
+        } else {
+          // CardPresenter
+          picassoBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/08/DSC02580.jpg");
+
+        }
+      }
+    }
   }
 
   private void loadRows() {
@@ -61,10 +144,6 @@ public class MainFragment extends BrowseFragment {
     HeaderItem headerItemCardView = new HeaderItem(2, "One Piece");
     CardPresenter cardPresenter = new CardPresenter();
     ArrayObjectAdapter cardViewAdapter = new ArrayObjectAdapter(cardPresenter);
-//    for (int i = 0; i < 7; i++) {
-//      Movie movie = new Movie(i, "Duan", "android");
-//      cardViewAdapter.add(movie);
-//    }
     cardViewAdapter.add(new Movie(1, "Luffy", "One Piece", R.drawable.luffy));
     cardViewAdapter.add(new Movie(2, "Zoro", "One Piece", R.drawable.zoro));
     cardViewAdapter.add(new Movie(3, "Usopp", "One Piece", R.drawable.usopp));

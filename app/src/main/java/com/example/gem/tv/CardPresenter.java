@@ -35,7 +35,7 @@ public class CardPresenter extends Presenter {
       super(view);
       mCardView = (ImageCardView) view;
       mImageCardViewTarget = new PicassoImageCardViewTarget(mCardView);
-      mDefaultCardImage = mContext.getResources().getDrawable(R.drawable.one_piece_film_z);
+      mDefaultCardImage = mContext.getResources().getDrawable(R.drawable.background_second);
     }
 
     public void setMovie(Movie mMovie) {
