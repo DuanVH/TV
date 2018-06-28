@@ -28,6 +28,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".DetailsActivity" />
+
+        <activity android:name=".VideoDetailsFragment" />
+
     </application>
 
 </manifest>

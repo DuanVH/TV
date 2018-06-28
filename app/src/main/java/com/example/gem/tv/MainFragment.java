@@ -8,6 +8,7 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
@@ -50,21 +51,16 @@ public class MainFragment extends BrowseFragment {
 
   private void setupEventListener() {
     setOnItemViewSelectedListener(new ItemViewSelectedListener());
+    setOnItemViewClickedListener(new ItemViewClickedListener());
   }
 
   private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
 
     @Override
     public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
-      // moi khi item duoc chon thi ...
-//      if (item instanceof String) {
-//        simpleBackgroundManager.clearBackground();
-//      } else if (item instanceof Movie) {
-//        simpleBackgroundManager.updateBackground(getActivity().getDrawable(R.drawable.background_first));
-//      }
+
       int test = PICASSO;
 
-      // Su dung anh trong Drawable
       if (test == DRAWABLE) {
         switch ((int) row.getId()) {
           case 0:
@@ -117,6 +113,14 @@ public class MainFragment extends BrowseFragment {
 
         }
       }
+    }
+  }
+
+  private final class ItemViewClickedListener implements OnItemViewClickedListener {
+
+    @Override
+    public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
+
     }
   }
 
